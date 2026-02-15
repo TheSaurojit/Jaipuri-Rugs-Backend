@@ -153,9 +153,9 @@
 
                             <div class="dropdown-divider"></div>
                             <form action="{{ route('logout') }}" method="POST" class="dropdown-item text-danger">
-                            @csrf
-                            <i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i>
-                            <button class="btn-danger" type="submit" key="t-logout">Logout</button>
+                                @csrf
+                                <i class="bx bx-power-off font-size-16 align-middle me-1 text-danger"></i>
+                                <button class="btn-danger" type="submit" key="t-logout">Logout</button>
                             </form>
                         </div>
                     </div>
@@ -176,46 +176,48 @@
                     <!-- Left Menu Start -->
                     <ul class="metismenu list-unstyled" id="side-menu">
 
-                    <li>
+                        <li>
                             <a href="/">
                                 <i class="bx bx-user-circle"></i>
                                 <span key="t-dashboards">Home </span>
                             </a>
                         </li>
 
+                        
                         <li>
-                            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                            <a href="{{ route('categories.all') }}">
                                 <i class="bx bx-user-circle"></i>
-                                <span key="t-authentication">Categories</span>
+                                <span key="t-dashboards">Categories</span>
                             </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                <li><a href="{{ route('categories.all') }}" key="t-register">All Categories</a></li>
-
-                                <li><a href="{{ route('categories.create') }}" key="t-register">Create Category</a></li>
-                            </ul>
-                        </li> 
-
-                     
-                        <li>
-                            <a href="javascript: void(0);" class="has-arrow waves-effect">
-                                <i class="bx bx-user-circle"></i>
-                                <span key="t-authentication">Products</span>
-                            </a>
-                            <ul class="sub-menu" aria-expanded="false">
-                                <li><a href="{{ route('products.all') }}" key="t-register">All Products</a></li>
-
-                                <li><a href="{{ route('products.create') }}" key="t-register">Create Product</a></li>
-
-
-                            </ul>
                         </li>
 
+
+                        <li>
+                            <a href="{{ route('products.all') }}">
+                                <i class="bx bx-user-circle"></i>
+                                <span key="t-dashboards">Products</span>
+                            </a>
+                        </li>
+
+
+
                          <li>
+                            <a href="{{ route('product-collections.all') }}">
+                                <i class="bx bx-user-circle"></i>
+                                <span key="t-dashboards">Product Collections</span>
+                            </a>
+                        </li>
+
+                       
+
+                        <li>
                             <a href="{{ route('contact.all') }}">
                                 <i class="bx bx-user-circle"></i>
                                 <span key="t-dashboards">Leads</span>
                             </a>
                         </li>
+
+
 
 
 
@@ -225,14 +227,14 @@
                                 <span key="t-dashboards">Orders </span>
                             </a>
                         </li>
-                       
-                         {{-- <li>
+
+                        {{-- <li>
                             <a href="{{ route('settings') }}">
-                                <i class="bx bx-user-circle"></i>
-                                <span key="t-dashboards">Settings </span>
-                            </a>
+                        <i class="bx bx-user-circle"></i>
+                        <span key="t-dashboards">Settings </span>
+                        </a>
                         </li> --}}
-                    
+
 
                         <li>
                             <a href="{{ route('change-password') }}">
@@ -243,16 +245,9 @@
 
 
 
-                        {{-- <li>
-                            <a href="{{ route('admin.dashboard') }}">
-                                <i class="bx bx-user-circle"></i>
-                                <span key="t-dashboards">Dashboard </span>
-                            </a>
-                            </li>
+                        
 
-                            --}}
 
-                      
 
 
 
@@ -347,21 +342,21 @@
 
     <script>
         window.onload = function() {
-            @if (session('success'))
+            @if(session('success'))
 
-                showToast('success', "{{ session('success') }}");
+            showToast('success', "{{ session('success') }}");
             @endif
 
-            @if (session('error'))
+            @if(session('error'))
 
-                showToast('error', "{{ session('error') }}");
+            showToast('error', "{{ session('error') }}");
             @endif
 
 
-            @if ($errors->any())
-                @foreach ($errors->all() as $error)
-                    showToast('error', "{{ $error }}");
-                @endforeach
+            @if($errors->any())
+            @foreach($errors->all() as $error)
+            showToast('error', "{{ $error }}");
+            @endforeach
             @endif
 
         };

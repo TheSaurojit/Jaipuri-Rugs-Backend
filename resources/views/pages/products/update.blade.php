@@ -23,7 +23,20 @@
                             <textarea class="form-control" id="description" name="description" rows="5" placeholder="Enter description">{{ $product->description }}</textarea>
                         </div>
 
-                    
+                        <div class="mb-3">
+                            <label for="category_id" class="form-label">Category</label>
+                            <select class="form-control" id="category_id" name="category_id" required>
+                                <option value="">Select Category</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}"
+                                        {{ $product->category_id == $category->id ? 'selected' : '' }}>
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+
                         <x-form-field type="text" label="meta keywords" name="meta_keywords" id="input-meta_keywords"
                             placeholder="enter meta keywords" value="{{ $product->meta_keywords }}" />
 
@@ -32,6 +45,63 @@
 
                         <x-form-field type="number" label="quantity" name="quantity" id="input-quantity"
                             placeholder="enter quantity" value="{{ $product->quantity }}" />
+
+
+                        {{-- Product Variations --}}
+                        <div class="mb-3">
+                            <label class="form-label">Product Variations</label>
+
+
+                            <div id="variation-container">
+                                @foreach ($product->variations as $index => $variation)
+                                    <div class="row mb-2 variation-row">
+
+                                        {{-- Hidden ID --}}
+                                        <input type="hidden" name="variations[{{ $index }}][id]"
+                                            value="{{ $variation->id }}">
+
+
+                                        <div class="col-md-5">
+                                            <input type="text"
+                                                name="variations[{{ $index }}][size]"
+                                                class="form-control"
+                                                value="{{ $variation->size }}"
+                                                placeholder="Enter size (e.g. 7x9 inch)"
+                                                
+                                                >
+                                        </div>
+
+                                        <div class="col-md-5">
+                                            <input type="number"
+                                                name="variations[{{ $index }}][price]"
+                                                class="form-control"
+                                                value="{{ $variation->price }}"
+                                                placeholder="Enter price"
+                                                
+                                                >
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <button type="button"
+                                                    class="btn btn-danger remove-variation"
+                                                    data-variation-id="{{ $variation->id }}"
+                                                    >
+                                                Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+
+
+                            <button type="button" class="btn btn-sm btn-success mt-2" id="add-variation">
+                                + Add More
+                            </button>
+                        </div>
+
+                        <div class="mb-3">
+                        <input type="hidden" name="remove_variations" value="" id="remove_variations">
+                        </div>
 
 
                         <div class="mb-4">
@@ -102,66 +172,12 @@
 
 
 @section('script-section')
+
+    {{-- variant script --}}
+    <script src="/js/custom/variant.js"></script>
+
     {{-- images script section --}}
+    <script src="/js/custom/image.js"></script>
 
-    <script>
-        const input = document.getElementById('images');
-        const previewContainer = document.getElementById('preview-container');
-        let fileList = new DataTransfer();
-
-        input.addEventListener('change', (e) => {
-            Array.from(input.files).forEach(file => {
-                // Prevent duplicates by checking name + size
-                if (![...fileList.files].some(f => f.name === file.name && f.size === file.size)) {
-                    fileList.items.add(file);
-
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        const col = document.createElement('div');
-                        col.className = 'col-md-3 mb-3';
-                        col.innerHTML = `
-                        <div class="card">
-                            <img src="${event.target.result}" class="card-img-top" style="height:150px; object-fit:cover;">
-                            <div class="card-body p-2 text-center">
-                                <button type="button" class="btn btn-sm btn-danger remove-image" data-name="${file.name}" data-size="${file.size}">Remove</button>
-                            </div>
-                        </div>
-                    `;
-                        previewContainer.appendChild(col);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-
-
-            // Set the updated file list back to the input
-            input.files = fileList.files;
-            // input.value = ""; // Clear input so same file can be re-selected if needed
-
-
-        });
-
-
-
-        // Remove button logic
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('remove-image')) {
-                const name = e.target.getAttribute('data-name');
-                const size = e.target.getAttribute('data-size');
-                const newFileList = new DataTransfer();
-
-                Array.from(fileList.files).forEach(file => {
-                    if (!(file.name === name && file.size == size)) {
-                        newFileList.items.add(file);
-                    }
-                });
-
-                fileList = newFileList;
-                input.files = fileList.files;
-
-                e.target.closest('.col-md-3').remove();
-
-            }
-        });
-    </script>
+   
 @endsection

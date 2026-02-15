@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductCollectionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
@@ -50,6 +51,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/delete/{category}', 'destroy')->name('delete');
     });
 
+    Route::prefix('product-collections')->controller(ProductCollectionController::class)->as('product-collections.')->group(function () {
+        Route::get('/', 'index')->name('all');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/create', 'store')->name('store');
+        Route::get('/edit/{product_collection}', 'edit')->name('edit');
+        Route::put('/update/{product_collection}', 'update')->name('update');
+        Route::get('/delete/{product_collection}', 'destroy')->name('destroy');
+    });
+
     Route::prefix('orders')->controller(OrderController::class)->as('orders.')->group(function () {
 
         Route::get('/', 'allOrder')->name('all');
@@ -71,8 +81,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', 'allContact')->name('all');
 
         // Route::get('/view/{contact}', 'view')->name('view');
-        
+
     });
+
+
 
 
     Route::get('/settings', [SettingController::class, 'updateView'])->name('settings');

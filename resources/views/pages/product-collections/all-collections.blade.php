@@ -7,13 +7,13 @@
             <div class="card-body">
                 <div class="row mb-2">
                     <div class="col-sm-4">
-                        <h4 class="card-title">Categories</h4>
+                        <h4 class="card-title">Product Collections</h4>
                     </div>
                     <div class="col-sm-8">
                         <div class="text-sm-end">
-                            <a href="{{ route('categories.create') }}"
+                            <a href="{{ route('product-collections.create') }}"
                                 class="btn btn-primary btn-rounded waves-effect waves-light mb-2 me-2">
-                                <i class="mdi mdi-plus me-1"></i> Add New Category
+                                <i class="mdi mdi-plus me-1"></i> Add New Collection
                             </a>
                         </div>
                     </div>
@@ -24,26 +24,27 @@
                         <thead class="table-light">
                             <tr>
                                 <th class="align-middle">ID</th>
-                                <th class="align-middle">Name</th>
-                                <th class="align-middle">Actions</th>
+                                <th class="align-middle">Collection Name</th>
+                                <th class="align-middle">Products Count</th>
+                                <th class="align-middle">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($categories as $cat)
+                            @foreach ($collections as $collection)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $cat->name }}</td>
+                                <td>{{ $loop->iteration }} </td>
+                                <td>{{ $collection->name }}</td>
+                                <td>{{ $collection->products_count }}</td>
                                 <td>
                                     <div class="d-flex gap-3">
-                                        <a href="{{ route('categories.update', ['category' => $cat->id]) }}" class="text-success"><i
+                                        <a href="{{ route('product-collections.edit', $collection->id) }}" class="text-success"><i
                                                 class="mdi mdi-pencil font-size-18"></i></a>
 
                                         @php
-                                        $url = route('categories.delete', ['category' => $cat->id]);
+                                        $url = route('product-collections.destroy', $collection->id);
                                         @endphp
-
-                                        <a href="#"
-                                            onclick="showDeleteModal('{{ $url }}')" class="text-danger">
+                                        <a href="#" class="text-danger"
+                                            onclick="showDeleteModal('{{ $url }}')">
                                             <i class="mdi mdi-delete font-size-18"></i>
                                         </a>
                                     </div>

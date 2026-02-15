@@ -13,13 +13,13 @@
                     <form action="{{ route('products.create') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
-                        <x-form-field type="text" label="title" name="title" id="input-title"
-                            placeholder="enter title" />
+                        <x-form-field type="text" label="title" name="title" id="input-title" placeholder="enter title" />
 
 
                         <div class="mb-3">
                             <label for="description" class="form-label"> Description</label>
-                            <textarea class="form-control" id="description" name="description" rows="5" placeholder="Enter description"></textarea>
+                            <textarea class="form-control" id="description" name="description" rows="5"
+                                placeholder="Enter description"></textarea>
                         </div>
 
                         <div class="mb-3">
@@ -36,18 +36,43 @@
                         <x-form-field type="text" label="meta keywords" name="meta_keywords" id="input-meta_keywords"
                             placeholder="enter meta keywords" />
 
-                        <x-form-field type="number" label="price" name="price" id="input-price"
-                            placeholder="enter price" />
+                        <x-form-field type="number" label="price" name="price" id="input-price" placeholder="enter price" />
 
                         <x-form-field type="number" label="quantity" name="quantity" id="input-quantity"
                             placeholder="enter quantity" />
+
+                        {{-- Product Variations --}}
+                        <div class="mb-3">
+                            <label class="form-label">Product Variations</label>
+
+                            <div id="variation-container">
+                                <div class="row mb-2 variation-row">
+                                    <div class="col-md-5">
+                                        <input type="text" name="variations[0][size]" class="form-control"
+                                            placeholder="Enter size (e.g. 7x9 inch)">
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <input type="number" name="variations[0][price]" class="form-control"
+                                            placeholder="Enter price (e.g. 1100)">
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger remove-variation">Remove</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="button" class="btn btn-sm btn-success mt-2" id="add-variation">
+                                + Add More
+                            </button>
+                        </div>
 
 
                         {{-- images start --}}
                         <div class="mb-3" style="padding: 10px 0">
                             <label for="images" class="form-label"> Images</label>
-                            <input type="file" name="images[]" id="images" class="form-control" multiple
-                                accept="image/*">
+                            <input type="file" name="images[]" id="images" class="form-control" multiple accept="image/*">
                         </div>
                         <div class="row" id="preview-container"></div>
 
@@ -77,66 +102,10 @@
 
 
 @section('script-section')
+
+    {{-- variant script --}}
+    <script src="/js/custom/variant.js"></script>
+
     {{-- images script section --}}
-
-    <script>
-        const input = document.getElementById('images');
-        const previewContainer = document.getElementById('preview-container');
-        let fileList = new DataTransfer();
-
-        input.addEventListener('change', (e) => {
-            Array.from(input.files).forEach(file => {
-                // Prevent duplicates by checking name + size
-                if (![...fileList.files].some(f => f.name === file.name && f.size === file.size)) {
-                    fileList.items.add(file);
-
-                    const reader = new FileReader();
-                    reader.onload = (event) => {
-                        const col = document.createElement('div');
-                        col.className = 'col-md-3 mb-3';
-                        col.innerHTML = `
-                        <div class="card">
-                            <img src="${event.target.result}" class="card-img-top" style="height:150px; object-fit:cover;">
-                            <div class="card-body p-2 text-center">
-                                <button type="button" class="btn btn-sm btn-danger remove-image" data-name="${file.name}" data-size="${file.size}">Remove</button>
-                            </div>
-                        </div>
-                    `;
-                        previewContainer.appendChild(col);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-
-
-            // Set the updated file list back to the input
-            input.files = fileList.files;
-            // input.value = ""; // Clear input so same file can be re-selected if needed
-
-
-        });
-
-
-
-        // Remove button logic
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('remove-image')) {
-                const name = e.target.getAttribute('data-name');
-                const size = e.target.getAttribute('data-size');
-                const newFileList = new DataTransfer();
-
-                Array.from(fileList.files).forEach(file => {
-                    if (!(file.name === name && file.size == size)) {
-                        newFileList.items.add(file);
-                    }
-                });
-
-                fileList = newFileList;
-                input.files = fileList.files;
-
-                e.target.closest('.col-md-3').remove();
-
-            }
-        });
-    </script>
+    <script src="/js/custom/image.js"></script>
 @endsection
