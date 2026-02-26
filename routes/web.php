@@ -8,6 +8,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductCollectionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\ShapeController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -35,6 +36,15 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/update/{product}', 'update')->name('update');
 
         Route::get('/delete/{product}', 'destroy')->name('delete');
+    });
+
+    Route::prefix('shapes')->controller(ShapeController::class)->as('shapes.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/store', 'store')->name('store');
+        Route::get('/edit/{shape}', 'edit')->name('edit');
+        Route::put('/update/{shape}', 'update')->name('update');
+        Route::get('/delete/{shape}', 'destroy')->name('destroy');
     });
 
     Route::prefix('categories')->controller(CategoryController::class)->as('categories.')->group(function () {

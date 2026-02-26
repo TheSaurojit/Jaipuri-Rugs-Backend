@@ -43,29 +43,49 @@
 
                         {{-- Product Variations --}}
                         <div class="mb-3">
-                            <label class="form-label">Product Variations</label>
+                            <label class="form-label d-block">Does this product have shapes?</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="has_shapes" id="has_shapes_no" value="0"
+                                    checked>
+                                <label class="form-check-label" for="has_shapes_no">No</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="has_shapes" id="has_shapes_yes"
+                                    value="1">
+                                <label class="form-check-label" for="has_shapes_yes">Yes</label>
+                            </div>
+                        </div>
 
-                            <div id="variation-container">
+                        {{-- Simple Variations Container --}}
+                        <div id="simple-variation-section" class="mb-3">
+                            <label class="form-label">Variations</label>
+                            <div id="simple-variation-container">
                                 <div class="row mb-2 variation-row">
                                     <div class="col-md-5">
                                         <input type="text" name="variations[0][size]" class="form-control"
                                             placeholder="Enter size (e.g. 7x9 inch)">
                                     </div>
-
                                     <div class="col-md-5">
                                         <input type="number" name="variations[0][price]" class="form-control"
                                             placeholder="Enter price (e.g. 1100)">
                                     </div>
-
                                     <div class="col-md-2">
                                         <button type="button" class="btn btn-danger remove-variation">Remove</button>
                                     </div>
                                 </div>
                             </div>
+                            <button type="button" class="btn btn-sm btn-success mt-2" id="add-simple-variation">+ Add
+                                Variation</button>
+                        </div>
 
-                            <button type="button" class="btn btn-sm btn-success mt-2" id="add-variation">
-                                + Add More
-                            </button>
+                        {{-- Shape Based Variations Container --}}
+                        <div id="shape-variation-section" class="mb-3" style="display: none;">
+                            <label class="form-label">Shape Based Variations</label>
+                            <div id="shape-group-container">
+                                {{-- Shape groups will be added here --}}
+                            </div>
+                            <button type="button" class="btn btn-sm btn-primary mt-2" id="add-shape-group">+ Add Shape
+                                Group</button>
                         </div>
 
 
@@ -104,6 +124,9 @@
 @section('script-section')
 
     {{-- variant script --}}
+    <script>
+        window.availableShapes = @json($shapes ?? []);
+    </script>
     <script src="/js/custom/variant.js"></script>
 
     {{-- images script section --}}

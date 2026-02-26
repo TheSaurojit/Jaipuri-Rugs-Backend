@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\ProductVariation;
+use App\Models\Shape;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
@@ -41,8 +42,9 @@ class ProductController extends Controller
     public function createView()
     {
         $categories = Category::all();
+        $shapes = Shape::all();
 
-        return view('pages.products.create', compact('categories'));
+        return view('pages.products.create', compact('categories', 'shapes'));
     }
 
     public function create(Request $request)
@@ -58,8 +60,9 @@ class ProductController extends Controller
             'images' => 'required|array', // images must be an array
             'images.*' => 'image|mimes:jpeg,png,jpg', // each file must be an image
             'variations' => 'required|array',
-            'variations.*.size' => 'required|string',
-            'variations.*.price' => 'required|numeric',
+            // 'variations.*.size' => 'required|string',
+            // 'variations.*.price' => 'required|numeric',
+            // 'variations.*.shape_id' => 'nullable|exists:shapes,id',
         ]);
 
 
@@ -78,15 +81,18 @@ class ProductController extends Controller
             ]);
 
             foreach ($request->input('variations') as $variation) {
-                ProductVariation::create([
-                    'product_id' => $product->id,
-                    'size' => $variation['size'],
-                    'price' => $variation['price'],
-                ]);
+
+                if ($variation['size'] && $variation['price']) {
+                    ProductVariation::create([
+                        'product_id' => $product->id,
+                        'size' => $variation['size'],
+                        'price' => $variation['price'],
+                        'shape_id' => $variation['shape_id'] ?? null,
+                    ]);
+                }
             }
 
             $this->uploadProductImages($request->file('images'), $product);
-
 
             return redirect()->route('products.all')->with('success', 'Product created successfully!');
         } catch (\Throwable $th) {
@@ -98,8 +104,9 @@ class ProductController extends Controller
     {
 
         $categories = Category::all();
+        $shapes = Shape::all();
 
-        return view('pages.products.update', compact('product', 'categories'));
+        return view('pages.products.update', compact('product', 'categories', 'shapes'));
     }
 
     public function update(Request $request, Product $product)
@@ -119,6 +126,7 @@ class ProductController extends Controller
             'variations.*.id' => 'nullable|numeric',
             'variations.*.size' => 'required|string',
             'variations.*.price' => 'required|numeric',
+            'variations.*.shape_id' => 'nullable|exists:shapes,id',
         ]);
 
 
@@ -151,12 +159,14 @@ class ProductController extends Controller
                     ProductVariation::where('id', $variation['id'])->update([
                         'size' => $variation['size'],
                         'price' => $variation['price'],
+                        'shape_id' => $variation['shape_id'] ?? null,
                     ]);
                 } else {
                     ProductVariation::create([
                         'product_id' => $product->id,
                         'size' => $variation['size'],
                         'price' => $variation['price'],
+                        'shape_id' => $variation['shape_id'] ?? null,
                     ]);
                 }
             }

@@ -145,7 +145,8 @@
                                 src="https://www.shutterstock.com/image-vector/user-account-avatar-icon-pictogram-600nw-1860375778.jpg"
                                 alt="Header Avatar">
 
-                            {{-- <span class="d-none d-xl-inline-block ms-1" key="t-henry">{{ Auth::user()->email }}</span> --}}
+                            {{-- <span class="d-none d-xl-inline-block ms-1" key="t-henry">{{ Auth::user()->email
+                                }}</span> --}}
                             <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                         </button>
                         <div class="dropdown-menu dropdown-menu-end">
@@ -183,11 +184,18 @@
                             </a>
                         </li>
 
-                        
+
                         <li>
                             <a href="{{ route('categories.all') }}">
                                 <i class="bx bx-user-circle"></i>
                                 <span key="t-dashboards">Categories</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="{{ route('shapes.index') }}">
+                                <i class="bx bx-user-circle"></i>
+                                <span key="t-dashboards">Product Shapes</span>
                             </a>
                         </li>
 
@@ -201,14 +209,14 @@
 
 
 
-                         <li>
+                        <li>
                             <a href="{{ route('product-collections.all') }}">
                                 <i class="bx bx-user-circle"></i>
                                 <span key="t-dashboards">Product Collections</span>
                             </a>
                         </li>
 
-                       
+
 
                         <li>
                             <a href="{{ route('contact.all') }}">
@@ -230,9 +238,9 @@
 
                         {{-- <li>
                             <a href="{{ route('settings') }}">
-                        <i class="bx bx-user-circle"></i>
-                        <span key="t-dashboards">Settings </span>
-                        </a>
+                                <i class="bx bx-user-circle"></i>
+                                <span key="t-dashboards">Settings </span>
+                            </a>
                         </li> --}}
 
 
@@ -245,7 +253,7 @@
 
 
 
-                        
+
 
 
 
@@ -341,22 +349,22 @@
     @yield('script-section')
 
     <script>
-        window.onload = function() {
+        window.onload = function () {
             @if(session('success'))
 
-            showToast('success', "{{ session('success') }}");
+                showToast('success', "{{ session('success') }}");
             @endif
 
             @if(session('error'))
 
-            showToast('error', "{{ session('error') }}");
+                showToast('error', "{{ session('error') }}");
             @endif
 
 
             @if($errors->any())
-            @foreach($errors->all() as $error)
-            showToast('error', "{{ $error }}");
-            @endforeach
+                @foreach($errors->all() as $error)
+                    showToast('error', "{{ $error }}");
+                @endforeach
             @endif
 
         };
