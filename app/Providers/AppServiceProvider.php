@@ -22,15 +22,21 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
-        $user = User::where('email', 'admin@gmail.com')->first();
-        if (!$user) {
-            User::create([
-                'id' => Str::uuid(),
-                'first_name' => 'Admin',
-                'last_name' => 'Admin',
-                'email' => 'admin@gmail.com',
-                'password' => bcrypt('123')
-            ]);
+        try {
+            //code...
+
+            $user = User::where('email', 'admin@gmail.com')->first();
+            if (!$user) {
+                User::create([
+                    'id' => Str::uuid(),
+                    'first_name' => 'Admin',
+                    'last_name' => 'Admin',
+                    'email' => 'admin@gmail.com',
+                    'password' => bcrypt('123')
+                ]);
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
         }
     }
 }
