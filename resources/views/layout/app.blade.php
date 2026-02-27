@@ -218,7 +218,7 @@
 
 
 
-                        <li>
+                        {{-- <li>
                             <a href="{{ route('contact.all') }}">
                                 <i class="bx bx-user-circle"></i>
                                 <span key="t-dashboards">Leads</span>
@@ -234,16 +234,9 @@
                                 <i class="bx bx-user-circle"></i>
                                 <span key="t-dashboards">Orders </span>
                             </a>
-                        </li>
-
-                        {{-- <li>
-                            <a href="{{ route('settings') }}">
-                                <i class="bx bx-user-circle"></i>
-                                <span key="t-dashboards">Settings </span>
-                            </a>
                         </li> --}}
 
-
+                        
                         <li>
                             <a href="{{ route('change-password') }}">
                                 <i class="bx bx-user-circle"></i>
