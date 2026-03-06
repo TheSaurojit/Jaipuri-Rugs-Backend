@@ -210,7 +210,7 @@
 
 
                         <li>
-                            <a href="{{ route('product-collections.all') }}">
+                            <a href="{{ route('product-collections.index') }}">
                                 <i class="bx bx-user-circle"></i>
                                 <span key="t-dashboards">Product Collections</span>
                             </a>

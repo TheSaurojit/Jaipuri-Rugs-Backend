@@ -80,7 +80,7 @@ class ApiController extends Controller
 
     public function getProductById(Request $request, $productId)
     {
-        $product = Product::where('id', $productId)->where('is_active', true)->with('multipleImages:product_id,path', 'category:id,name')->first();
+        $product = Product::where('id', $productId)->where('is_active', true)->with('multipleImages:product_id,path', 'category:id,name' , 'variations:id,product_id,shape_id,size,price' ,'variations.shape:id,name,slug')->first();
 
         if (!$product) {
             return response()->json([
